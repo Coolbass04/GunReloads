@@ -30,7 +30,6 @@ public class MainActivity extends Activity
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
-    // Adam added this comment
     private CharSequence mTitle;
 
     @Override

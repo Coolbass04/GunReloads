@@ -2,10 +2,10 @@ apply plugin: 'android'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion '19.0.3'
 
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 11
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
@@ -20,5 +20,7 @@ android {
 
 dependencies {
     compile 'com.android.support:support-v4:19.+'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/core-2.3.0.jar')
+    compile files('libs/qrgen-1.4.jar')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 }

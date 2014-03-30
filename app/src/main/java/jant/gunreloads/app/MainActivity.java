@@ -6,7 +6,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,22 +20,35 @@ import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+import jant.gunreloads.app.sql.helper.DatabaseHelper;
+import jant.gunreloads.app.sql.model.Bullet;
+import jant.gunreloads.app.sql.model.Enums;
+
+public class MainActivity extends FragmentActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private CreateAmmoFragment mCreateAmmoFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Create the database
+        db = new DatabaseHelper(getApplicationContext());
+
+        // Test the database
+        testDatabase();
+
         final Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,14 +58,13 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
             }
         });
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mCreateAmmoFragment = (CreateAmmoFragment) getFragmentManager().findFragmentById(R.id.create_ammo);
         mTitle = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     @Override
@@ -60,6 +74,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
+
     }
 
     public void onSectionAttached(int number) {
@@ -130,6 +145,17 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         }
     }
 
+    private void testDatabase() {
+        Bullet bullet1 = new Bullet("Winchester", "JHP", Enums.Caliber.c40SW, "185");
+        long bullet1_id = db.createBullet(bullet1);
+        Bullet returnedBullet = db.getBullet(bullet1_id);
+        Log.d("Bullet Count", "Bullet Manu: " + returnedBullet.getManufacturer());
+        Log.d("Bullet Count", "Bullet Style : " + returnedBullet.getStyle());
+        Log.d("Bullet Count", "Bullet Caliber : " + returnedBullet.getCaliber());
+        Log.d("Bullet Count", "Bullet Weight : " + returnedBullet.getWeight());
+
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -156,12 +182,20 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+            if(sectionNumber != 2) {
+                container.removeAllViews();
+                View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+                TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+                textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+                return rootView;
+            }
+            else {
+                container.removeAllViews();
+                View rootView = inflater.inflate(R.layout.create_ammo, container, false);
+                return rootView;
+            }
         }
 
         @Override

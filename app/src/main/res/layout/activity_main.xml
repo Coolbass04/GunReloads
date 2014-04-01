@@ -50,4 +50,11 @@
         android:name="jant.gunreloads.app.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
 
+    <fragment android:id="@+id/create_ammo"
+        android:layout_width="@dimen/navigation_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:name="jant.gunreloads.app.CreateAmmoFragment"
+        tools:layout="@layout/create_ammo" />
+
 </android.support.v4.widget.DrawerLayout>

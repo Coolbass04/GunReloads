@@ -31,4 +31,10 @@ public class CreateAmmoFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
 }

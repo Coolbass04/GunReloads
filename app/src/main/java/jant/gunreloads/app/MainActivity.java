@@ -47,7 +47,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         db = new DatabaseHelper(getApplicationContext());
 
         // Test the database
-        testDatabase();
+//        testDatabase();
 
         final Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +57,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 qrReadIntent.initiateScan();
             }
         });
-
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mCreateAmmoFragment = (CreateAmmoFragment) getFragmentManager().findFragmentById(R.id.create_ammo);
@@ -184,16 +183,15 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
-            if(sectionNumber != 2) {
+            if(sectionNumber == 2) {
                 container.removeAllViews();
-                View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-                TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-                textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+                View rootView = inflater.inflate(R.layout.create_ammo, container, false);
                 return rootView;
             }
             else {
-                container.removeAllViews();
-                View rootView = inflater.inflate(R.layout.create_ammo, container, false);
+                View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+                TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+                textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
                 return rootView;
             }
         }

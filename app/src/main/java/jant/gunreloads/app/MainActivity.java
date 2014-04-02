@@ -49,7 +49,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         // Test the database
 //        testDatabase();
 
-        final Button button = (Button) findViewById(R.id.button);
+        final Button button = (Button) findViewById(R.id.scan_qr_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,9 +69,20 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
+        Fragment fragment = null;
         FragmentManager fragmentManager = getFragmentManager();
+        switch (position) {
+            case 0:
+            case 2:
+                fragment = PlaceholderFragment.newInstance(position + 1);
+                break;
+            case 1:
+                fragment = new CreateAmmoFragment();
+                break;
+        }
+
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, fragment)
                 .commit();
 
     }
@@ -133,7 +144,6 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                     IntentResult qrResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
                     if(qrResult != null) {
                         String contents = qrResult.getContents();
-                        String format = qrResult.getFormatName();
                         TextView qrResultText = (TextView) findViewById(R.id.textView);
                         qrResultText.setText(contents);
                     }
@@ -183,6 +193,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+            container.removeAllViews();
             if(sectionNumber == 2) {
                 container.removeAllViews();
                 View rootView = inflater.inflate(R.layout.create_ammo, container, false);

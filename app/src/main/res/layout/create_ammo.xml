@@ -17,6 +17,13 @@
             android:layout_height="wrap_content"
             android:text="Create Ammo Fragment"
             android:id="@+id/create_ammo_button"
-            android:layout_gravity="center_horizontal|top" />
+            android:layout_gravity="center_horizontal|bottom" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/createdAmmoId"
+            android:layout_gravity="center" />
     </FrameLayout>
 </LinearLayout>

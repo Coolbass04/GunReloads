@@ -4,16 +4,16 @@ package jant.gunreloads.app.sql.model;
  * Created by Adam on 4/2/2014.
  */
 public class PersistanceObject {
-    protected int id;
+    protected long id;
     protected String created_at;
 
     public PersistanceObject(){}
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

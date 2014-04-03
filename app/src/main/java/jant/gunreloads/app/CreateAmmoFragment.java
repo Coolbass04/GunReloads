@@ -7,12 +7,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import jant.gunreloads.app.sql.helper.DatabaseHelper;
+import jant.gunreloads.app.sql.model.Bullet;
+import jant.gunreloads.app.sql.model.Enums;
+import jant.gunreloads.app.sql.model.Manufacturer;
 
 /**
  * Created by Adam on 3/30/2014.
@@ -34,9 +40,10 @@ public class CreateAmmoFragment extends Fragment {
         createAmmoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "Scanning Ammo", Toast.LENGTH_SHORT).show();
-                IntentIntegrator qrReadIntent = new IntentIntegrator(CreateAmmoFragment.this);
-                qrReadIntent.initiateScan();
+                parseTextInput(view);
+//                Toast.makeText(getActivity().getApplicationContext(), "Scanning Ammo", Toast.LENGTH_SHORT).show();
+//                IntentIntegrator qrReadIntent = new IntentIntegrator(CreateAmmoFragment.this);
+//                qrReadIntent.initiateScan();
             }
         });
 
@@ -65,6 +72,33 @@ public class CreateAmmoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    private void parseTextInput(View v) {
+        DatabaseHelper db = new DatabaseHelper(getActivity().getApplicationContext());
+        Toast.makeText(getActivity().getApplicationContext(), "Parsing Input", Toast.LENGTH_SHORT).show();
+        View parent = (View) v.getParent();
+        AutoCompleteTextView bulletManufacturer = (AutoCompleteTextView) parent.findViewById(R.id.bullet_manufacturer);
+        AutoCompleteTextView bulletStyle = (AutoCompleteTextView) parent.findViewById(R.id.bullet_style);
+        AutoCompleteTextView bulletWeight = (AutoCompleteTextView) parent.findViewById(R.id.bullet_weight);
+        AutoCompleteTextView bulletCaliber = (AutoCompleteTextView) parent.findViewById(R.id.bullet_caliber);
+
+        long manufacturerId = db.findManufacturerByName(bulletManufacturer.getText().toString());
+        if(manufacturerId == 0) {
+            Manufacturer manufacturer = new Manufacturer(bulletManufacturer.getText().toString());
+            manufacturerId = db.createManufacturer(manufacturer);
+        }
+
+        Bullet newBullet = new Bullet();
+        newBullet.setCaliber(Enums.Caliber.valueOf(bulletCaliber.getText().toString()));
+        newBullet.setManufacturerId(manufacturerId);
+        newBullet.setStyle(bulletStyle.getText().toString());
+        newBullet.setWeight(bulletWeight.getText().toString());
+        long newBulletId = db.createBullet(newBullet);
+
+        String newBulletMade = "New Bullet: " + newBulletId;
+
+        Toast.makeText(getActivity().getApplicationContext(), newBulletMade, Toast.LENGTH_LONG).show();
     }
 
 }

@@ -6,10 +6,10 @@ import java.util.Date;
  * Created by Adam on 4/1/2014.
  */
 public class Ammo extends PersistanceObject {
-    private int bulletId;
-    private int powderId;
-    private int primerId;
-    private int resultsId;
+    private long bulletId;
+    private long powderId;
+    private long primerId;
+    private long resultsId;
     private float caseLength;
     private float cartridgeLength;
     private Date dateManufactured;
@@ -19,7 +19,7 @@ public class Ammo extends PersistanceObject {
 
     public Ammo() {}
 
-    public Ammo(int bulletId, int powderId, int primerId, int resultsId, float caseLength, float cartridgeLength, Date dateManufactured, int quantityMade) {
+    public Ammo(long bulletId, long powderId, long primerId, long resultsId, float caseLength, float cartridgeLength, Date dateManufactured, int quantityMade) {
         this.bulletId = bulletId;
         this.powderId = powderId;
         this.primerId = primerId;
@@ -30,7 +30,7 @@ public class Ammo extends PersistanceObject {
         this.quantityMade = quantityMade;
     }
 
-    public Ammo(int id, int bulletId, int powderId, int primerId, int resultsId, float caseLength, float cartridgeLength, Date dateManufactured, int quantityMade) {
+    public Ammo(long id, long bulletId, long powderId, long primerId, long resultsId, float caseLength, float cartridgeLength, Date dateManufactured, int quantityMade) {
         this.bulletId = bulletId;
         this.powderId = powderId;
         this.primerId = primerId;
@@ -41,51 +41,35 @@ public class Ammo extends PersistanceObject {
         this.quantityMade = quantityMade;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public int getBulletId() {
+    public long getBulletId() {
         return bulletId;
     }
 
-    public void setBulletId(int bulletId) {
+    public void setBulletId(long bulletId) {
         this.bulletId = bulletId;
     }
 
-    public int getPowderId() {
+    public long getPowderId() {
         return powderId;
     }
 
-    public void setPowderId(int powderId) {
+    public void setPowderId(long powderId) {
         this.powderId = powderId;
     }
 
-    public int getPrimerId() {
+    public long getPrimerId() {
         return primerId;
     }
 
-    public void setPrimerId(int primerId) {
+    public void setPrimerId(long primerId) {
         this.primerId = primerId;
     }
 
-    public int getResultsId() {
+    public long getResultsId() {
         return resultsId;
     }
 
-    public void setResultsId(int resultsId) {
+    public void setResultsId(long resultsId) {
         this.resultsId = resultsId;
     }
 

@@ -8,22 +8,145 @@
     android:layout_height="match_parent"
     tools:context="jant.gunreloads.app.CreateAmmoFragment" >
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Ammo Fragment"
+            android:text="Create Ammo"
             android:id="@+id/create_ammo_button"
-            android:layout_gravity="center_horizontal|bottom" />
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/createdAmmoId"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_marginBottom="66dp"
+            android:layout_above="@+id/create_ammo_button"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Bullet"
+            android:id="@+id/bullet_heading"
+            android:layout_gravity="left|top"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <AutoCompleteTextView
+            android:layout_width="@dimen/bullet_input_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/bullet_manufacturer"
+            android:layout_below="@+id/bullet_heading"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:hint="@string/manufacturer_hint" />
+
+        <AutoCompleteTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bullet_style"
+            android:layout_below="@+id/bullet_manufacturer"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="false"
+            android:layout_alignRight="@+id/bullet_manufacturer"
+            android:layout_alignEnd="@+id/bullet_manufacturer"
+            android:hint="@string/style_hint" />
+
+        <AutoCompleteTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bullet_weight"
+            android:layout_below="@+id/bullet_style"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="false"
+            android:layout_alignRight="@+id/bullet_style"
+            android:layout_alignEnd="@+id/bullet_style"
+            android:hint="@string/weight_hint" />
+
+        <AutoCompleteTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bullet_caliber"
+            android:layout_below="@+id/bullet_weight"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="false"
+            android:layout_alignRight="@+id/bullet_weight"
+            android:layout_alignEnd="@+id/bullet_weight"
+            android:autoText="false"
+            android:capitalize="sentences"
+            android:completionHint="@string/title_section4"
+            android:hint="@string/caliber_hint" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Powder"
+            android:id="@+id/powder_heading"
+            android:layout_above="@+id/bullet_manufacturer"
+            android:layout_alignLeft="@+id/powder_manufacturer"
+            android:layout_alignStart="@+id/powder_manufacturer" />
+
+        <AutoCompleteTextView
+            android:layout_width="@dimen/bullet_input_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/powder_manufacturer"
+            android:layout_below="@+id/powder_heading"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:hint="@string/manufacturer_hint" />
+
+        <AutoCompleteTextView
+            android:layout_width="@dimen/bullet_input_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/powder_type"
+            android:hint="@string/type_hint"
+            android:layout_above="@+id/bullet_weight"
+            android:layout_alignLeft="@+id/powder_manufacturer"
+            android:layout_alignStart="@+id/powder_manufacturer" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Primer"
+            android:id="@+id/primer_heading"
+            android:layout_alignTop="@+id/bullet_caliber"
+            android:layout_alignLeft="@+id/primer_manufacturer"
+            android:layout_alignStart="@+id/primer_manufacturer" />
+
+        <AutoCompleteTextView
+            android:layout_width="@dimen/bullet_input_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/primer_manufacturer"
+            android:layout_alignParentEnd="true"
+            android:hint="@string/manufacturer_hint"
+            android:layout_below="@+id/primer_heading"
+            android:layout_alignLeft="@+id/powder_type" />
+
+        <AutoCompleteTextView
+            android:layout_width="@dimen/bullet_input_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/primer_type"
+            android:hint="@string/type_hint"
+            android:layout_alignStart="@+id/powder_manufacturer"
+            android:layout_below="@+id/primer_manufacturer"
+            android:layout_alignLeft="@+id/powder_type" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
     </FrameLayout>
 </LinearLayout>

@@ -9,6 +9,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
-    <string name="userInputError">Wrong input Dummy</string>
+    <string name="manufacturer_hint">Manufacturer</string>
+    <string name="style_hint">Style</string>
+    <string name="caliber_hint">Caliber</string>
+    <string name="weight_hint">Weight</string>
+    <string name="type_hint">Type</string>
 
 </resources>

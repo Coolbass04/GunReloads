@@ -6,30 +6,30 @@ import java.util.Date;
  * Created by Adam on 4/2/2014.
  */
 public class Results extends PersistanceObject {
-    private int firearmId;
+    private long firearmId;
     private Date dateShot;
     private String explanation;
 
     public Results(){}
 
-    public Results(int firearmId, Date dateShot, String explanation) {
+    public Results(long firearmId, Date dateShot, String explanation) {
         this.firearmId = firearmId;
         this.dateShot = dateShot;
         this.explanation = explanation;
     }
 
-    public Results(int id, int firearmId, Date dateShot, String explanation) {
+    public Results(long id, long firearmId, Date dateShot, String explanation) {
         this.id = id;
         this.firearmId = firearmId;
         this.dateShot = dateShot;
         this.explanation = explanation;
     }
 
-    public int getFirearmId() {
+    public long getFirearmId() {
         return firearmId;
     }
 
-    public void setFirearmId(int firearmId) {
+    public void setFirearmId(long firearmId) {
         this.firearmId = firearmId;
     }
 

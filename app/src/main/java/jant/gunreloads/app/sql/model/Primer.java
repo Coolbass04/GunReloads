@@ -4,43 +4,27 @@ package jant.gunreloads.app.sql.model;
  * Created by Adam on 4/2/2014.
  */
 public class Primer extends PersistanceObject {
-    private int manufacturerId;
+    private long manufacturerId;
     private String type;
 
     public Primer() {}
 
-    public Primer(int manufacturerId, String type) {
+    public Primer(long manufacturerId, String type) {
         this.manufacturerId = manufacturerId;
         this.type = type;
     }
 
-    public Primer(int id, int manufacturerId, String type) {
+    public Primer(long id, long manufacturerId, String type) {
         this.id = id;
         this.manufacturerId = manufacturerId;
         this.type = type;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public int getManufacturerId() {
+    public long getManufacturerId() {
         return manufacturerId;
     }
 
-    public void setManufacturerId(int manufacturerId) {
+    public void setManufacturerId(long manufacturerId) {
         this.manufacturerId = manufacturerId;
     }
 

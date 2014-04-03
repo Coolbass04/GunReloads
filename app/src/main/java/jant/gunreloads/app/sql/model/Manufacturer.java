@@ -12,7 +12,7 @@ public class Manufacturer extends PersistanceObject {
         this.name = name;
     }
 
-    public Manufacturer(int id, String name) {
+    public Manufacturer(long id, String name) {
         this.id = id;
         this.name = name;
     }

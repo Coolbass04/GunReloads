@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String LOG = "DatabaseHelper";
 
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Consts
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -152,10 +152,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.e(LOG, "Creating Databases");
         // creating required tables
         db.execSQL(CREATE_TABLE_AMMO);
         db.execSQL(CREATE_TABLE_BULLET);
+        db.execSQL(CREATE_TABLE_FIREARM);
+        db.execSQL(CREATE_TABLE_MANUFACTURER);
         db.execSQL(CREATE_TABLE_POWDER);
+        db.execSQL(CREATE_TABLE_PRIMER);
+        db.execSQL(CREATE_TABLE_RESULTS);
     }
 
     @Override
@@ -164,6 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_AMMO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BULLET);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FIREARM);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MANUFACTURER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_POWDER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRIMER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_RESULTS);
@@ -204,11 +210,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Ammo ammo = new Ammo();
-        ammo.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-        ammo.setBulletId(c.getInt(c.getColumnIndex(AMMO_BULLET_ID)));
-        ammo.setPowderId(c.getInt(c.getColumnIndex(AMMO_POWDER_ID)));
-        ammo.setPrimerId(c.getInt(c.getColumnIndex(AMMO_PRIMER_ID)));
-        ammo.setResultsId(c.getInt(c.getColumnIndex(AMMO_RESULTS_ID)));
+        ammo.setId(c.getLong(c.getColumnIndex(KEY_ID)));
+        ammo.setBulletId(c.getLong(c.getColumnIndex(AMMO_BULLET_ID)));
+        ammo.setPowderId(c.getLong(c.getColumnIndex(AMMO_POWDER_ID)));
+        ammo.setPrimerId(c.getLong(c.getColumnIndex(AMMO_PRIMER_ID)));
+        ammo.setResultsId(c.getLong(c.getColumnIndex(AMMO_RESULTS_ID)));
         ammo.setCaseLength(c.getFloat(c.getColumnIndex(AMMO_CASE_LENGTH)));
         ammo.setCartridgeLength(c.getFloat(c.getColumnIndex(AMMO_CARTRIDGE_LENGTH)));
         Date date = null;
@@ -247,9 +253,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Bullet bullet = new Bullet();
-        bullet.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        bullet.setId(c.getLong(c.getColumnIndex(KEY_ID)));
         bullet.setCaliber(Enums.Caliber.valueOf(c.getString(c.getColumnIndex(BULLET_CALIBER))));
-        bullet.setManufacturerId(c.getString(c.getColumnIndex(BULLET_MANUFACTURER_ID)));
+        bullet.setManufacturerId(c.getLong(c.getColumnIndex(BULLET_MANUFACTURER_ID)));
         bullet.setStyle(c.getString(c.getColumnIndex(BULLET_STYLE)));
         bullet.setWeight(c.getString(c.getColumnIndex(BULLET_WEIGHT)));
 
@@ -277,9 +283,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Firearm firearm = new Firearm();
-        firearm.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        firearm.setId(c.getLong(c.getColumnIndex(KEY_ID)));
         firearm.setExtraInfo(c.getString(c.getColumnIndex(FIREARM_EXTRA_INFO)));
-        firearm.setManufacturerId(c.getInt(c.getColumnIndex(FIREARM_MANUFACTURER_ID)));
+        firearm.setManufacturerId(c.getLong(c.getColumnIndex(FIREARM_MANUFACTURER_ID)));
         firearm.setModel(c.getString(c.getColumnIndex(FIREARM_MODEL)));
         closeDb();
         return firearm;
@@ -303,10 +309,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        manufacturer.setId(c.getLong(c.getColumnIndex(KEY_ID)));
         manufacturer.setName(c.getString(c.getColumnIndex(MANUFACTURER_NAME)));
         closeDb();
         return manufacturer;
+    }
+
+    // @returns id of the manufacturer name if found, otherwise null
+    public long findManufacturerByName(String manufacturerName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selectQuery = "SELECT " + KEY_ID + " FROM " + TABLE_MANUFACTURER + " WHERE " + MANUFACTURER_NAME + " = \"" + manufacturerName + "\"";
+        Log.e(LOG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if(c != null && c.getColumnIndex(KEY_ID) > 0) {
+            c.moveToFirst();
+            return c.getLong(c.getColumnIndex(KEY_ID));
+        }
+        else {
+            return 0;
+        }
     }
 
     // *** Helpers for Powder Table ***
@@ -328,8 +351,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Powder powder = new Powder();
-        powder.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-        powder.setManufacturerId(c.getInt(c.getColumnIndex(POWDER_MANUFACTURER_ID)));
+        powder.setId(c.getLong(c.getColumnIndex(KEY_ID)));
+        powder.setManufacturerId(c.getLong(c.getColumnIndex(POWDER_MANUFACTURER_ID)));
         powder.setType(c.getString(c.getColumnIndex(POWDER_TYPE)));
         closeDb();
         return powder;
@@ -354,8 +377,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Primer primer = new Primer();
-        primer.setId(c.getInt(c.getColumnIndex(KEY_ID)));
-        primer.setManufacturerId(c.getInt(c.getColumnIndex(PRIMER_MANUFACTURER_ID)));
+        primer.setId(c.getLong(c.getColumnIndex(KEY_ID)));
+        primer.setManufacturerId(c.getLong(c.getColumnIndex(PRIMER_MANUFACTURER_ID)));
         primer.setType(c.getString(c.getColumnIndex(PRIMER_TYPE)));
         closeDb();
         return primer;
@@ -381,7 +404,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         Results results = new Results();
-        results.setId(c.getInt(c.getColumnIndex(KEY_ID)));
+        results.setId(c.getLong(c.getColumnIndex(KEY_ID)));
         Date date = null;
         try {
             date = DATE_FORMAT.parse(c.getString(c.getColumnIndex(RESULTS_DATE_SHOT)));
@@ -391,7 +414,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         results.setDateShot(date);
         results.setExplanation(c.getString(c.getColumnIndex(RESULTS_EXPLANATION)));
-        results.setFirearmId(c.getInt(c.getColumnIndex(RESULTS_FIREARM_ID)));
+        results.setFirearmId(c.getLong(c.getColumnIndex(RESULTS_FIREARM_ID)));
         closeDb();
         return results;
     }

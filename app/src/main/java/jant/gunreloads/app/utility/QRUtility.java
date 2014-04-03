@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -41,9 +40,6 @@ public class QRUtility {
         final ImageView imageView = (ImageView) a.findViewById(R.id.imageView);
         if (ImageBitmap != null) {
             imageView.setImageBitmap(ImageBitmap);
-        } else {
-            Toast.makeText(a.getApplicationContext(), a.getResources().getString(R.string.userInputError),
-                    Toast.LENGTH_SHORT).show();
         }
     }
 }

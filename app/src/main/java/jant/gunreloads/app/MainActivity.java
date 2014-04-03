@@ -74,6 +74,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         switch (position) {
             case 0:
             case 2:
+            case 3:
                 fragment = PlaceholderFragment.newInstance(position + 1);
                 break;
             case 1:
@@ -97,6 +98,9 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_section4);
                 break;
         }
     }
@@ -158,7 +162,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
         Bullet bullet1 = new Bullet("Winchester", "JHP", Enums.Caliber.c40SW, "185");
         long bullet1_id = db.createBullet(bullet1);
         Bullet returnedBullet = db.getBullet(bullet1_id);
-        Log.d("Bullet Count", "Bullet Manu: " + returnedBullet.getManufacturer());
+        Log.d("Bullet Count", "Bullet Manu: " + returnedBullet.getManufacturerId());
         Log.d("Bullet Count", "Bullet Style : " + returnedBullet.getStyle());
         Log.d("Bullet Count", "Bullet Caliber : " + returnedBullet.getCaliber());
         Log.d("Bullet Count", "Bullet Weight : " + returnedBullet.getWeight());

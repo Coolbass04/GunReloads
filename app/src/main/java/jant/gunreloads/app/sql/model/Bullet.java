@@ -3,45 +3,43 @@ package jant.gunreloads.app.sql.model;
 /**
  * Created by Adam on 3/29/2014.
  */
-public class Bullet {
-    private int _id;
-    private String created_at;
-    private String manufacturer;
+public class Bullet extends PersistanceObject {
+    private String manufacturerId;
     private String style;
     private Enums.Caliber caliber;
     private String weight;
 
     public Bullet() {}
 
-    public Bullet(String manufacturer, String style, Enums.Caliber caliber, String weight) {
-        this.manufacturer = manufacturer;
+    public Bullet(String manufacturerId, String style, Enums.Caliber caliber, String weight) {
+        this.manufacturerId = manufacturerId;
         this.style = style;
         this.caliber = caliber;
         this.weight = weight;
     }
 
-    public Bullet(int id, String manufacturer, String style, Enums.Caliber caliber, String weight) {
-        this._id = id;
-        this.manufacturer = manufacturer;
+    public Bullet(int id, String manufacturerId, String style, Enums.Caliber caliber, String weight) {
+        this.id = id;
+        this.manufacturerId = manufacturerId;
         this.style = style;
         this.caliber = caliber;
         this.weight = weight;
     }
 
     public int getId() {
-        return _id;
+        return id;
     }
 
     public void setId(int id) {
-        this._id = id;
+        this.id = id;
     }
 
-    public String getManufacturer() {
-        return manufacturer;
+    public String getManufacturerId() {
+        return manufacturerId;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setManufacturerId(String manufacturerId) {
+        this.manufacturerId = manufacturerId;
     }
 
     public String getStyle() {

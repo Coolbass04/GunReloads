@@ -13,7 +13,6 @@ import java.util.Date;
 
 import jant.gunreloads.app.sql.model.Ammo;
 import jant.gunreloads.app.sql.model.Bullet;
-import jant.gunreloads.app.sql.model.Enums;
 import jant.gunreloads.app.sql.model.Firearm;
 import jant.gunreloads.app.sql.model.Manufacturer;
 import jant.gunreloads.app.sql.model.Powder;
@@ -192,7 +191,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(AMMO_BULLET_ID, ammo.getBulletId());
         values.put(AMMO_POWDER_ID, ammo.getPowderId());
         values.put(AMMO_PRIMER_ID, ammo.getPrimerId());
-        values.put(AMMO_RESULTS_ID, ammo.getResultsId());
+        //values.put(AMMO_RESULTS_ID, ammo.getResultsId());
         values.put(AMMO_CASE_LENGTH, ammo.getCaseLength());
         values.put(AMMO_CARTRIDGE_LENGTH, ammo.getCartridgeLength());
         values.put(AMMO_DATE_MANUFACTURED, DATE_FORMAT.format(ammo.getDateManufactured()));
@@ -236,7 +235,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long createBullet(Bullet bullet) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(BULLET_CALIBER, bullet.getCaliber().name());
+        values.put(BULLET_CALIBER, bullet.getCaliber());
         values.put(BULLET_MANUFACTURER_ID, bullet.getManufacturerId());
         values.put(BULLET_STYLE, bullet.getStyle());
         values.put(BULLET_WEIGHT, bullet.getWeight());
@@ -254,7 +253,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Bullet bullet = new Bullet();
         bullet.setId(c.getLong(c.getColumnIndex(KEY_ID)));
-        bullet.setCaliber(Enums.Caliber.valueOf(c.getString(c.getColumnIndex(BULLET_CALIBER))));
+        bullet.setCaliber(c.getString(c.getColumnIndex(BULLET_CALIBER)));
         bullet.setManufacturerId(c.getLong(c.getColumnIndex(BULLET_MANUFACTURER_ID)));
         bullet.setStyle(c.getString(c.getColumnIndex(BULLET_STYLE)));
         bullet.setWeight(c.getString(c.getColumnIndex(BULLET_WEIGHT)));

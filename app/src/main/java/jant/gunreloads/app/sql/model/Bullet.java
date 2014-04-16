@@ -6,19 +6,19 @@ package jant.gunreloads.app.sql.model;
 public class Bullet extends PersistanceObject {
     private long manufacturerId;
     private String style;
-    private Enums.Caliber caliber;
+    private String caliber;
     private String weight;
 
     public Bullet() {}
 
-    public Bullet(long manufacturerId, String style, Enums.Caliber caliber, String weight) {
+    public Bullet(long manufacturerId, String style, String caliber, String weight) {
         this.manufacturerId = manufacturerId;
         this.style = style;
         this.caliber = caliber;
         this.weight = weight;
     }
 
-    public Bullet(long id, long manufacturerId, String style, Enums.Caliber caliber, String weight) {
+    public Bullet(long id, long manufacturerId, String style, String caliber, String weight) {
         this.id = id;
         this.manufacturerId = manufacturerId;
         this.style = style;
@@ -42,11 +42,11 @@ public class Bullet extends PersistanceObject {
         this.style = style;
     }
 
-    public Enums.Caliber getCaliber() {
+    public String getCaliber() {
         return caliber;
     }
 
-    public void setCaliber(Enums.Caliber caliber) {
+    public void setCaliber(String caliber) {
         this.caliber = caliber;
     }
 

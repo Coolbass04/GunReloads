@@ -157,7 +157,7 @@ public class MainActivity extends FragmentActivity implements NavigationDrawerFr
     }
 
     private void testDatabase() {
-//        Bullet bullet1 = new Bullet("Winchester", "JHP", Enums.Caliber.c40SW, "185");
+//        Bullet bullet1 = new Bullet("Winchester", "JHP", "40 S&W", "185");
 //        long bullet1_id = db.createBullet(bullet1);
 //        Bullet returnedBullet = db.getBullet(bullet1_id);
 //        Log.d("Bullet Count", "Bullet Manu: " + returnedBullet.getManufacturerId());

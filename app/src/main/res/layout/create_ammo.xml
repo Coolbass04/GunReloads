@@ -24,16 +24,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/createdAmmoId"
-            android:layout_gravity="center"
-            android:layout_marginBottom="66dp"
-            android:layout_above="@+id/create_ammo_button"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Bullet"
             android:id="@+id/bullet_heading"
@@ -49,7 +39,9 @@
             android:layout_below="@+id/bullet_heading"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:hint="@string/manufacturer_hint" />
+            android:hint="@string/manufacturer_hint"
+            android:layout_alignRight="@+id/bullet_style"
+            android:layout_alignEnd="@+id/bullet_style" />
 
         <AutoCompleteTextView
             android:layout_width="wrap_content"
@@ -58,9 +50,9 @@
             android:layout_below="@+id/bullet_manufacturer"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="false"
-            android:layout_alignRight="@+id/bullet_manufacturer"
-            android:layout_alignEnd="@+id/bullet_manufacturer"
-            android:hint="@string/style_hint" />
+            android:hint="@string/style_hint"
+            android:layout_alignRight="@+id/bullet_weight"
+            android:layout_alignEnd="@+id/bullet_weight" />
 
         <AutoCompleteTextView
             android:layout_width="wrap_content"
@@ -69,9 +61,9 @@
             android:layout_below="@+id/bullet_style"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="false"
-            android:layout_alignRight="@+id/bullet_style"
-            android:layout_alignEnd="@+id/bullet_style"
-            android:hint="@string/weight_hint" />
+            android:hint="@string/weight_hint"
+            android:layout_alignRight="@+id/bullet_caliber"
+            android:layout_alignEnd="@+id/bullet_caliber" />
 
         <AutoCompleteTextView
             android:layout_width="wrap_content"
@@ -80,12 +72,12 @@
             android:layout_below="@+id/bullet_weight"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="false"
-            android:layout_alignRight="@+id/bullet_weight"
-            android:layout_alignEnd="@+id/bullet_weight"
             android:autoText="false"
             android:capitalize="sentences"
             android:completionHint="@string/title_section4"
-            android:hint="@string/caliber_hint" />
+            android:hint="@string/caliber_hint"
+            android:layout_alignRight="@+id/ammoCaseLength"
+            android:layout_alignEnd="@+id/ammoCaseLength" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -142,6 +134,61 @@
             android:layout_alignStart="@+id/powder_manufacturer"
             android:layout_below="@+id/primer_manufacturer"
             android:layout_alignLeft="@+id/powder_type" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Ammo"
+            android:id="@+id/ammoHeading"
+            android:layout_gravity="left|top"
+            android:layout_below="@+id/primer_type"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <AutoCompleteTextView
+            android:layout_width="@dimen/bullet_input_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/ammoCaseLength"
+            android:hint="@string/case_length_hint"
+            android:layout_below="@+id/ammoHeading"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignRight="@+id/ammoCartridgeLength"
+            android:layout_alignEnd="@+id/ammoCartridgeLength" />
+
+        <AutoCompleteTextView
+            android:layout_width="@dimen/bullet_input_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/ammoCartridgeLength"
+            android:hint="@string/cartridge_length_hint"
+            android:layout_below="@+id/ammoCaseLength"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:singleLine="true"
+            android:textSize="@dimen/activity_horizontal_margin" />
+
+        <AutoCompleteTextView
+            android:layout_width="@dimen/bullet_input_width"
+            android:layout_height="wrap_content"
+            android:id="@+id/ammoQuantityMade"
+            android:hint="@string/quantity_made_hint"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/ammoCartridgeLength" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/ammoCreateDate"
+            android:layout_below="@+id/ammoQuantityMade"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:layout_alignRight="@+id/ammoQuantityMade"
+            android:layout_alignEnd="@+id/ammoQuantityMade" />
+
     </RelativeLayout>
 
     <FrameLayout

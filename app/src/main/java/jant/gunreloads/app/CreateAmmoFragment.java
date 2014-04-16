@@ -1,7 +1,10 @@
 package jant.gunreloads.app;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,27 +14,35 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.w3c.dom.Text;
+
+import java.sql.Date;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 import jant.gunreloads.app.sql.helper.DatabaseHelper;
+import jant.gunreloads.app.sql.model.Ammo;
 import jant.gunreloads.app.sql.model.Bullet;
 import jant.gunreloads.app.sql.model.Caliber;
 import jant.gunreloads.app.sql.model.Manufacturer;
 import jant.gunreloads.app.sql.model.Powder;
 import jant.gunreloads.app.sql.model.Primer;
+import jant.gunreloads.app.utility.DatePickerDialogFragment;
 
 /**
  * Created by Adam on 3/30/2014.
  */
 public class CreateAmmoFragment extends Fragment {
     private Button createAmmoButton;
-    private TextView createdAmmoId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,8 +52,8 @@ public class CreateAmmoFragment extends Fragment {
         }
         View rootView = inflater.inflate(R.layout.create_ammo, container, false);
         setBulletCalibers(rootView);
+        setAmmoDate(rootView);
 
-        createdAmmoId = (TextView) rootView.findViewById(R.id.createdAmmoId);
         createAmmoButton = (Button) rootView.findViewById(R.id.create_ammo_button);
         createAmmoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +68,12 @@ public class CreateAmmoFragment extends Fragment {
         return rootView;
     }
 
+    private void setAmmoDate(View rootView) {
+        TextView ammoDate = (TextView) rootView.findViewById(R.id.ammoCreateDate);
+        Date createdDate = new Date(System.currentTimeMillis());
+        ammoDate.setText(createdDate.toString());
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -66,7 +83,6 @@ public class CreateAmmoFragment extends Fragment {
                     IntentResult qrResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
                     if(qrResult != null) {
                         String contents = qrResult.getContents();
-                        createdAmmoId.setText(contents);
                     }
                 }
                 break;
@@ -105,18 +121,58 @@ public class CreateAmmoFragment extends Fragment {
         boolean isValidInput = verifyBulletFields(db, parent);
         isValidInput &= verifyPowderFields(db, parent);
         isValidInput &= verifyPrimerFields(db, parent);
+        isValidInput &= verifyAmmoFields(db, parent);
 
         if(isValidInput) {
-            insertBullet(db, parent);
-            insertPowder(db, parent);
-            insertPrimer(db, parent);
+            long bulletId = insertBullet(db, parent);
+            long powderId = insertPowder(db, parent);
+            long primerId = insertPrimer(db, parent);
+            insertAmmo(bulletId, powderId, primerId, db, parent);
         }
         else {
             Toast.makeText(getActivity().getApplicationContext(), "Enter in all required fields", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void insertBullet(DatabaseHelper db, View parent) {
+    private void insertAmmo(long bulletId, long powderId, long primerId, DatabaseHelper db, View parent) {
+        AutoCompleteTextView ammoCartridgeLength = (AutoCompleteTextView) parent.findViewById(R.id.ammoCartridgeLength);
+        AutoCompleteTextView ammoCaseLength = (AutoCompleteTextView) parent.findViewById(R.id.ammoCaseLength);
+        AutoCompleteTextView ammoQuantity = (AutoCompleteTextView) parent.findViewById(R.id.ammoQuantityMade);
+
+        Ammo newAmmo = new Ammo();
+        newAmmo.setCartridgeLength(Float.parseFloat(ammoCartridgeLength.getText().toString()));
+        newAmmo.setCaseLength(Float.parseFloat(ammoCaseLength.getText().toString()));
+        newAmmo.setDateManufactured(new Date(System.currentTimeMillis()));
+        newAmmo.setBulletId(bulletId);
+        newAmmo.setPowderId(powderId);
+        newAmmo.setPrimerId(primerId);
+        long newAmmoId = db.createAmmo(newAmmo);
+
+        String newAmmoMade = "New Ammo: " + newAmmoId;
+
+        Toast.makeText(getActivity().getApplicationContext(), newAmmoMade, Toast.LENGTH_LONG).show();
+    }
+
+    private boolean verifyAmmoFields(DatabaseHelper db, View parent) {
+        boolean validInput = true;
+        AutoCompleteTextView ammoCartridgeLength = (AutoCompleteTextView) parent.findViewById(R.id.ammoCartridgeLength);
+        AutoCompleteTextView ammoCaseLength = (AutoCompleteTextView) parent.findViewById(R.id.ammoCaseLength);
+        AutoCompleteTextView ammoQuantityMade = (AutoCompleteTextView) parent.findViewById(R.id.ammoQuantityMade);
+
+        if(ammoCartridgeLength.getText().toString().length() <= 0) {
+            validInput = updateField(ammoCartridgeLength, R.string.cartridge_length_hint);
+        }
+        if(ammoCaseLength.getText().toString().length() <= 0 ) {
+            validInput = updateField(ammoCaseLength, R.string.case_length_hint);
+        }
+        if(ammoQuantityMade.getText().toString().length() <= 0) {
+            validInput = updateField(ammoQuantityMade, R.string.quantity_made_hint);
+        }
+
+        return validInput;
+    }
+
+    private long insertBullet(DatabaseHelper db, View parent) {
         AutoCompleteTextView bulletManufacturer = (AutoCompleteTextView) parent.findViewById(R.id.bullet_manufacturer);
         AutoCompleteTextView bulletStyle = (AutoCompleteTextView) parent.findViewById(R.id.bullet_style);
         AutoCompleteTextView bulletWeight = (AutoCompleteTextView) parent.findViewById(R.id.bullet_weight);
@@ -133,11 +189,7 @@ public class CreateAmmoFragment extends Fragment {
         newBullet.setManufacturerId(manufacturerId);
         newBullet.setStyle(bulletStyle.getText().toString());
         newBullet.setWeight(bulletWeight.getText().toString());
-        long newBulletId = db.createBullet(newBullet);
-
-        String newBulletMade = "New Bullet: " + newBulletId;
-
-        Toast.makeText(getActivity().getApplicationContext(), newBulletMade, Toast.LENGTH_LONG).show();
+        return db.createBullet(newBullet);
     }
 
     private boolean verifyBulletFields(DatabaseHelper db, View parent) {
@@ -163,7 +215,7 @@ public class CreateAmmoFragment extends Fragment {
         return validInput;
     }
 
-    private void insertPowder(DatabaseHelper db, View parent) {
+    private long insertPowder(DatabaseHelper db, View parent) {
         AutoCompleteTextView powderManufacturer = (AutoCompleteTextView) parent.findViewById(R.id.powder_manufacturer);
         AutoCompleteTextView powderType = (AutoCompleteTextView) parent.findViewById(R.id.powder_type);
 
@@ -175,11 +227,7 @@ public class CreateAmmoFragment extends Fragment {
         Powder newPowder = new Powder();
         newPowder.setManufacturerId(manufacturerId);
         newPowder.setType(powderType.getText().toString());
-        long newPowderId = db.createPowder(newPowder);
-
-        String newPowderMade = "New Powder: " + newPowderId;
-
-        Toast.makeText(getActivity().getApplicationContext(), newPowderMade, Toast.LENGTH_LONG).show();
+        return db.createPowder(newPowder);
     }
 
     private boolean verifyPowderFields(DatabaseHelper db, View parent) {
@@ -197,7 +245,7 @@ public class CreateAmmoFragment extends Fragment {
         return validInput;
     }
 
-    private void insertPrimer(DatabaseHelper db, View parent) {
+    private long insertPrimer(DatabaseHelper db, View parent) {
         AutoCompleteTextView primerManufacturer = (AutoCompleteTextView) parent.findViewById(R.id.primer_manufacturer);
         AutoCompleteTextView primerType = (AutoCompleteTextView) parent.findViewById(R.id.primer_type);
 
@@ -209,11 +257,7 @@ public class CreateAmmoFragment extends Fragment {
         Primer newPrimer = new Primer();
         newPrimer.setManufacturerId(manufacturerId);
         newPrimer.setType(primerType.getText().toString());
-        long newPrimerId = db.createPrimer(newPrimer);
-
-        String newPrimerMade = "New Primer: " + newPrimerId;
-
-        Toast.makeText(getActivity().getApplicationContext(), newPrimerMade, Toast.LENGTH_LONG).show();
+        return db.createPrimer(newPrimer);
     }
 
     private boolean verifyPrimerFields(DatabaseHelper db, View parent) {

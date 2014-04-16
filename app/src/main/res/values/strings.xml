@@ -14,5 +14,8 @@
     <string name="caliber_hint">Caliber</string>
     <string name="weight_hint">Weight</string>
     <string name="type_hint">Type</string>
+    <string name="case_length_hint">Case Length</string>
+    <string name="cartridge_length_hint">Cartridge Length</string>
+    <string name="quantity_made_hint">Quantity Made</string>
 
 </resources>
